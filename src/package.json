@@ -1,0 +1,21 @@
+{
+  "name": "pg_audit_log",
+  "version": "1.0.0",
+  "description": "Audit Logger for Postgresql",
+  "main": "main.coffee",
+  "scripts": {
+    "run": "coffee main.coffee",
+    "test": "mocha --compilers coffee:coffee-script/register --recursive"
+  },
+  "author": "Wattana Inthaphong <wattaint@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "coffee-script": "^1.10.0",
+    "js-yaml": "^3.4.2",
+    "log4js": "^0.6.26",
+    "moment": "^2.10.6",
+    "async": "^1.4.2",
+    "underscore": "^1.8.3",
+    "pg": "^4.4.2"
+  }
+}
