@@ -1,0 +1,6 @@
+DROP TRIGGER IF EXISTS t_audit_log ON <table>;
+CREATE TRIGGER t_audit_log
+AFTER INSERT OR UPDATE OR DELETE
+ON <table>
+FOR EACH ROW
+EXECUTE PROCEDURE fn_audit_log();
