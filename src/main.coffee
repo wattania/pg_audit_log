@@ -22,9 +22,10 @@ log4js.configure appenders: appenders
 log = log4js.getLogger()
 
 config          = yaml.safeLoad fs.readFileSync (path.join __dirname, 'config.yml'), 'utf8'
-stmt_trigger    = fs.readFileSync (path.join __dirname, 'scripts', 'create_trigger.sql'), 'utf8'
-stmt_list_table = fs.readFileSync (path.join __dirname, 'scripts', 'list_all_table.sql'), 'utf8'
-stmt_fn         = fs.readFileSync (path.join __dirname, 'scripts', 'fn_audit_log.sql'), 'utf8'
+
+stmt = {}
+for name in ['create_trigger', 'list_all_table', 'fn_audit_log']
+  stmt[name] = fs.readFileSync (path.join __dirname, 'scripts', "#{name}.sql"), 'utf8'
 
 pg.connect config.conn, (err, client, done)->
   return console.error 'error fetching client from pool', err if err
@@ -33,14 +34,14 @@ pg.connect config.conn, (err, client, done)->
 
   async.waterfall [
     (next)->
-      client.query stmt_fn, next
+      client.query stmt.fn_audit_log, next
 
     (result, next)->
-      client.query stmt_list_table, next
+      client.query stmt.list_all_table, next
   ,
     (results, next)->
       async.mapSeries results.rows, (row, next)-> 
-        client.query stmt_trigger.split("<table>").join("\"#{row.table_name}\""), next
+        client.query stmt.create_trigger.split("<table>").join("\"#{row.table_name}\""), next
 
       , next
 
