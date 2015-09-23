@@ -5,4 +5,3 @@ COPY src/package.json /
 RUN npm install
 
 WORKDIR /src
-VOLUME /logs

@@ -8,10 +8,12 @@ pg      = require 'pg'
 yaml    = require 'js-yaml'
 
 CHANNEL = "PG_LOG"
+
+log_filename = "/logs/" + (moment(new Date()).format 'YYYYMMDD') + ".log"
 appenders = [
-  type: 'file'
+  type: 'console'
   absolute: true
-  filename: "/logs/" + (moment(new Date()).format 'YYYY') + ".log"
+  filename: log_filename
   layout: type: 'pattern', pattern: "[%d{ISO8601}][%p] - [#{CHANNEL}] %m "
   alwaysIncludePattern: true
 ]
@@ -24,7 +26,7 @@ pg.connect config.conn, (err, client, done)->
   return console.error 'error fetching client from pool', err if err
   client.on 'notification', (msg)->
     #console.log msg.payload
-    log.debug msg.payload
+    log.debug msg.payload 
   
   client.query "LISTEN #{CHANNEL}", [], (err, result)->
     if err
