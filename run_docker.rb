@@ -16,6 +16,7 @@ end
 cmd = [
   "docker run --rm -it",
   "-v #{pwd}/src:/src",
+  "--link aboss_pg:aboss_pg",
   "--privileged",
   docker_repo,
   "bash"
