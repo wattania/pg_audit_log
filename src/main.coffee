@@ -49,4 +49,6 @@ pg.connect config.conn, (err, client, done)->
     client.query "LISTEN #{CHANNEL}", [], next
 
   ], (err)->
-    done client if err
+    if err
+      console.log err
+      done client 

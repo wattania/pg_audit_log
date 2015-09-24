@@ -80,6 +80,7 @@ payload = MyLogging(TD).parse()
 if payload:
   if USE_NOTIFY:
     #logging.debug("=Notify=")
+    payload = payload.replace("'", "''")
     plpy.execute("NOTIFY %s, '%s'" % (NOTIFY_CHANNEL, payload))
     #plpy.execute("NOTIFY PG_LOG, 'ss'")
   else:
