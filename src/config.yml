@@ -1,1 +1,1 @@
-conn: postgres://postgres:Angstroms99!@aboss_pg/aboss_db
+conn: postgres://postgres:Angstroms99!@aboss_pg/aboss_db_dev

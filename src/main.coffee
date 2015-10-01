@@ -24,7 +24,7 @@ log = log4js.getLogger()
 config          = yaml.safeLoad fs.readFileSync (path.join __dirname, 'config.yml'), 'utf8'
 
 stmt = {}
-for name in ['create_trigger', 'list_all_table', 'fn_audit_log']
+for name in ['create_plpython', 'create_trigger', 'list_all_table', 'fn_audit_log']
   stmt[name] = fs.readFileSync (path.join __dirname, 'scripts', "#{name}.sql"), 'utf8'
 
 pg.connect config.conn, (err, client, done)->
@@ -34,6 +34,9 @@ pg.connect config.conn, (err, client, done)->
 
   async.waterfall [
     (next)->
+      client.query stmt.create_plpython, next
+
+    (result, next)->
       client.query stmt.fn_audit_log, next
 
     (result, next)->
